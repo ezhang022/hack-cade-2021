@@ -61,6 +61,7 @@ def main():
                     pygame.quit()
 
             if event.type == pygame.KEYDOWN:
+                global user_text
                 user_text += event.unicode
                     
 
