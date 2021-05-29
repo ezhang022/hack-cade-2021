@@ -42,17 +42,6 @@ class Player():
         global world_data
         tile_x_pix = self.rect.x
         tile_y_pix = self.rect.y
-        # if (direction == 1 and prevdir == 2) or (direction == 2 and prevdir == 1) or (direction == 0 and prevdir == 3):
-        #     tile_x_pos=math.floor(tile_x_pix/50)
-        #     tile_y_pos=math.floor(tile_y_pix/50)
-        # elif (direction == 0 and prevdir ==3) or(direction ==1 and prevdir ==3) or (direction == 2 and prevdir == 0):
-        #     tile_x_pos=math.ceil(tile_x_pix/50)
-        #     tile_y_pos=math.floor(tile_y_pix/50)
-        # else:
-        #0 left
-        #1 right
-        #2 up
-        #3 down
 
         if (prevdir == 0 and direction == 3) or (prevdir == 3 and direction == 1) or (prevdir == 0 and direction == 2) or (prevdir == 3 and direction == 0) :
             tile_x_pos=math.ceil(tile_x_pix/50)
@@ -78,29 +67,6 @@ class Player():
         if world_data[tile_y_pos][tile_x_pos] == 1:
             return False
         return True
-
-    # def move_until(self, turn_dir):
-    #     if turn_dir ==0:
-    #         tile_x_pos = round(self.rect.x/50)+1
-    #         target_x = tile_x_pos*50
-    #         pixels_left = target_x - self.rect.x
-    #         cycles = pixels_left/5
-    #     elif turn_dir ==1:
-    #         tile_x_pos = round(self.rect.x/50)-1
-    #         target_x = tile_x_pos*50
-    #         pixels_left = target_x - self.rect.x
-    #         cycles = pixels_left/5
-    #     elif turn_dir ==2:
-    #         tile_y_pos = round(self.rect.y/50)-1
-    #         target_y = tile_y_pos*50
-    #         pixels_left = target_y - self.rect.y
-    #         cycles = pixels_left/5
-    #     elif turn_dir ==3:
-    #         tile_y_pos = round(self.rect.y/50)+1
-    #         target_y = tile_y_pos*50
-    #         pixels_left = target_y - self.rect.y
-    #         cycles = pixels_left/5
-    #     self.cycles = abs(cycles)
 
     def update(self):
         dx=0
