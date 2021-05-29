@@ -13,10 +13,20 @@ pygame.display.set_caption('Pacman Game')
 
 # define game variables
 tile_size = 50
+score = 0
 
 # load images
 bg_img = pygame.image.load('black.png')
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height))
+
+
+#graphics junk
+font = pygame.font.SysFont('Bauhaus 93', 30)
+white = (255,255,255)
+
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x,y))
 
 
 class Player():
@@ -140,6 +150,16 @@ class Player():
         screen.blit(self.image, self.rect)
 
 
+class Coin(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('point.png')
+        self.image = pygame.transform.scale(img, (20,20))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
+
+
+
 class World():
     def __init__(self, data):
 
@@ -159,6 +179,9 @@ class World():
                     img_rect.y=row_count * tile_size
                     tile=(img, img_rect)
                     self.tile_list.append(tile)
+                if tile == 2:
+                    coin = Coin(col_count * tile_size + (tile_size // 2), row_count*tile_size + (tile_size // 2))
+                    coin_group.add(coin)
                 col_count += 1
             row_count += 1
 
@@ -169,7 +192,7 @@ class World():
 
 world_data=[
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+[1, 0, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
 [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
 [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
 [1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1],
@@ -190,8 +213,11 @@ world_data=[
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
-world=World(world_data)
 player=Player(50, 50)
+coin_group = pygame.sprite.Group()
+world=World(world_data)
+
+
 clock=pygame.time.Clock()
 run=True
 while run:
@@ -200,6 +226,12 @@ while run:
 
     world.draw()
     player.update()
+    coin_group.draw(screen)
+
+    draw_text('Score: ' + str(score), font, white, tile_size - 10, 10)
+
+    if pygame.sprite.spritecollide(player, coin_group, True):
+        score += 10
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
