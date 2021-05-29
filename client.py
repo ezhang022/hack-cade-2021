@@ -3,20 +3,21 @@
 import pygame
 import sys
 import os
-pygame.init()
-pygame.font.init()
+
 
 
 
 def display():
     mouse = pygame.mouse.get_pos()
+    pygame.display.set_caption("PvP Pac-Man")
     WIN.fill(BLACK)
-    WIN.blit(BACKGROUND, (0,0))
+    WIN.blit(BACKGROUND1, (0,0))
     
     #"Username" Button
     pygame.draw.rect(WIN, LIGHT_GREY, [USERNAME_POS_X, USERNAME_POS_Y, USERNAME_SIZE_X, USERNAME_SIZE_Y])
-    username = FONT.render(user_text, True, BLACK)
-    WIN.blit(username, (USERNAME_POS_X, USERNAME_POS_Y))
+    username = FONT2.render(user_text, True, BLACK)
+    WIN.blit(USERNAME_TITLE, (USERNAME_POS_X, USERNAME_POS_Y - 20))
+    WIN.blit(username, (USERNAME_POS_X, USERNAME_POS_Y+10))
 
     #"Find Game" button
     pygame.draw.rect(WIN,LIGHT_GREY,[FIND_GAME_POS_X, FIND_GAME_POS_Y, FIND_GAME_SIZE_X, FIND_GAME_SIZE_Y]) 
@@ -32,15 +33,19 @@ def display():
 
     pygame.display.update()
 
-def find_game_screen():
+def find_game_screen(position):
+    pygame.display.set_caption("PvP Pac-Man - Finding Game")
     WIN.fill(BLACK)
-    WIN.blit(BACKGROUND, (0,0))
+    WIN.blit(BACKGROUND2, (0,0))
+    
+    WIN.blit(PACMAN, (position.x, position.y))
+
     pygame.display.update()
 
 def main():
     clock = pygame.time.Clock()
     run = True
-    disp = True
+    display_one = True
     while run:
         mouse = pygame.mouse.get_pos()
 
@@ -50,35 +55,50 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            #find game
+            if event.type == pygame.MOUSEBUTTONDOWN and display_one:
                 if FIND_GAME_POS_X <= mouse[0] <= FIND_GAME_POS_X + FIND_GAME_SIZE_X and FIND_GAME_POS_Y <= mouse[1] <= FIND_GAME_POS_Y + FIND_GAME_SIZE_Y:
                     # Your Code Here Kai for what you want button to do
-                    disp = False
-                    find_game_screen()
-            
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_X + QUIT_SIZE_Y:  #if mouse click is in these two areas
-                    pygame.quit()
-
-            if event.type == pygame.KEYDOWN:
-                global user_text
-                user_text += event.unicode
+                    display_one = False
+                    pac = pygame.Rect(50, 670, PACMAN_WIDTH, PACMAN_HEIGHT)
+                    find_game_screen(pac)
                     
+            #quit
+            if event.type == pygame.MOUSEBUTTONDOWN and display_one:
+                if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_X + QUIT_SIZE_Y:  #if mouse click is in these two areas
+                    run = False
 
-        if disp == True:
+            #username
+            if event.type == pygame.KEYDOWN:    #enter username
+                global user_text
+                if event.key == pygame.K_BACKSPACE:
+                    user_text = user_text[:-1]
+                else:
+                    if len(user_text) < 10:
+                        user_text += event.unicode
+
+        if display_one:
             display()
 
     pygame.quit()
 
 if __name__ == "__main__":
+    pygame.init()
+    pygame.font.init()
+    
     #Setting Up
     DIMENSIONS = (1000,1000)
     WIN = pygame.display.set_mode(DIMENSIONS)
     WIDTH = WIN.get_width()
     HEIGHT = WIN.get_height()
-    BACKGROUND = pygame.image.load('boxes.png')
+    BACKGROUND1 = pygame.image.load('MainScreen.png')
+    BACKGROUND2 = pygame.image.load('LoadingScreen.png')
+    PACMAN_IMAGE = pygame.image.load('pacmanyellow.png')
+    PACMAN_WIDTH = 50
+    PACMAN_HEIGHT = 51
+    PACMAN = pygame.transform.scale(PACMAN_IMAGE, (PACMAN_HEIGHT, PACMAN_WIDTH))
     FPS = 60
-    pygame.display.set_caption("PVP Packman")
+    
 
     #Colors
     BLACK = 0,0,0
@@ -91,10 +111,11 @@ if __name__ == "__main__":
     #text
     DEFAULT_FONT = pygame.font.get_default_font()
     FONT = pygame.font.SysFont(DEFAULT_FONT, 30)
-    FONT2 = pygame.font.SysFont(DEFAULT_FONT, 60)
+    FONT2 = pygame.font.SysFont(DEFAULT_FONT, 80)
 
     FIND_GAME = FONT.render('Find Game', True, BLACK)
     QUIT = FONT.render('Quit', True, BLACK)
+    USERNAME_TITLE = FONT.render("Username:", True, WHITE)
     user_text = ''
 
 
