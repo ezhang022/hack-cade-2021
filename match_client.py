@@ -50,26 +50,26 @@ def display():
     #"Playername" Button
     pygame.draw.rect(WIN, LIGHT_GREY, [PLAYERNAME_POS_X, PLAYERNAME_POS_Y, PLAYERNAME_SIZE_X, PLAYERNAME_SIZE_Y])
     playername = FONT2.render(user_text, True, BLACK)
-    WIN.blit(PLAYERNAME_TITLE, (PLAYERNAME_POS_X, PLAYERNAME_POS_Y - 20))
+    WIN.blit(PLAYERNAME_TITLE, (PLAYERNAME_POS_X, PLAYERNAME_POS_Y - 32))
     WIN.blit(playername, (PLAYERNAME_POS_X, PLAYERNAME_POS_Y+10))
 
     #"Find Game" button
     pygame.draw.rect(WIN,LIGHT_GREY,[FIND_GAME_POS_X, FIND_GAME_POS_Y, FIND_GAME_SIZE_X, FIND_GAME_SIZE_Y]) 
     if FIND_GAME_POS_X <= mouse[0] <= FIND_GAME_POS_X + FIND_GAME_SIZE_X and FIND_GAME_POS_Y <= mouse[1] <= FIND_GAME_POS_Y + FIND_GAME_SIZE_Y:
         pygame.draw.rect(WIN, GREEN, [FIND_GAME_POS_X, FIND_GAME_POS_Y, FIND_GAME_SIZE_X, FIND_GAME_SIZE_Y])
-    WIN.blit(FIND_GAME, (FIND_GAME_POS_X + FIND_GAME_SIZE_X/4, FIND_GAME_POS_Y + FIND_GAME_SIZE_Y/3))
+    WIN.blit(FIND_GAME, (FIND_GAME_POS_X + FIND_GAME_SIZE_X/5.5, FIND_GAME_POS_Y + FIND_GAME_SIZE_Y/3))
 
     #"Quit Button"
     pygame.draw.rect(WIN, LIGHT_GREY, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
     if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_X + QUIT_SIZE_Y:
         pygame.draw.rect(WIN, RED, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
-    WIN.blit(QUIT, (QUIT_POS_X + QUIT_SIZE_X/2.6, QUIT_POS_Y + QUIT_SIZE_Y/3))
+    WIN.blit(QUIT, (QUIT_POS_X + QUIT_SIZE_X/2.75, QUIT_POS_Y + QUIT_SIZE_Y/3))
 
     #"Tutorial" Button
     pygame.draw.rect(WIN, LIGHT_GREY, [TUTORIAL_POS_X, TUTORIAL_POS_Y, TUTORIAL_SIZE_X, TUTORIAL_SIZE_Y])
     if TUTORIAL_POS_X <= mouse[0] <= TUTORIAL_POS_X + TUTORIAL_SIZE_X and TUTORIAL_POS_Y <= mouse[1] <= TUTORIAL_POS_Y + TUTORIAL_SIZE_Y:
         pygame.draw.rect(WIN, GOLD, [TUTORIAL_POS_X, TUTORIAL_POS_Y, TUTORIAL_SIZE_X, TUTORIAL_SIZE_Y])
-    WIN.blit(TUTORIAL, (TUTORIAL_POS_X + TUTORIAL_SIZE_X/3.25, TUTORIAL_POS_Y + TUTORIAL_SIZE_Y/2.75))
+    WIN.blit(TUTORIAL, (TUTORIAL_POS_X + TUTORIAL_SIZE_X/4, TUTORIAL_POS_Y + TUTORIAL_SIZE_Y/3))
 
     pygame.display.update()
 
@@ -82,7 +82,7 @@ def find_game_screen():
     pygame.draw.rect(WIN, LIGHT_GREY, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
     if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_X + QUIT_SIZE_Y:
         pygame.draw.rect(WIN, RED, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
-    WIN.blit(QUIT, (QUIT_POS_X + QUIT_POS_X/7, QUIT_POS_Y + QUIT_SIZE_Y/3))
+    WIN.blit(QUIT, (QUIT_POS_X + QUIT_SIZE_X/2.75, QUIT_POS_Y + QUIT_SIZE_Y/3))
 
     pygame.display.update()
 
@@ -166,10 +166,6 @@ def main():
 
                     find_game_screen()
 
-            # if event.type == pygame.MOUSEBUTTONDOWN and display_find_game:
-            #     if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_Y + QUIT_SIZE_Y:
-            #         run = False
-
             if client.status == "match":
                 pass
                 #match_found_screen()
@@ -221,7 +217,7 @@ if __name__ == "__main__":
 
     #text
     DEFAULT_FONT = pygame.font.get_default_font()
-    FONT = pygame.font.SysFont(DEFAULT_FONT, 30)
+    FONT = pygame.font.SysFont(DEFAULT_FONT, 40)
     FONT2 = pygame.font.SysFont(DEFAULT_FONT, 80)
 
     FIND_GAME = FONT.render('Find Game', True, BLACK)
