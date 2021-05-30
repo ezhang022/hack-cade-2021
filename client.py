@@ -6,7 +6,6 @@ import os
 
 
 
-
 def display():
     mouse = pygame.mouse.get_pos()
     pygame.display.set_caption("PvP Pac-Man")
@@ -42,10 +41,17 @@ def find_game_screen(position):
 
     pygame.display.update()
 
+# def movePac(pac):
+#     def move_x(pac):
+#         pac.x += 100
+#     x = move_x(pac)
+#     pygame.time.set_timer(x, 750)
+
 def main():
     clock = pygame.time.Clock()
     run = True
     display_one = True
+    pac = pygame.Rect(50, 670, PACMAN_WIDTH, PACMAN_HEIGHT)
     while run:
         mouse = pygame.mouse.get_pos()
 
@@ -56,11 +62,10 @@ def main():
                 run = False
 
             #find game
-            if event.type == pygame.MOUSEBUTTONDOWN and display_one:
+            if event.type == pygame.MOUSEBUTTONDOWN or not display_one:
                 if FIND_GAME_POS_X <= mouse[0] <= FIND_GAME_POS_X + FIND_GAME_SIZE_X and FIND_GAME_POS_Y <= mouse[1] <= FIND_GAME_POS_Y + FIND_GAME_SIZE_Y:
                     # Your Code Here Kai for what you want button to do
                     display_one = False
-                    pac = pygame.Rect(50, 670, PACMAN_WIDTH, PACMAN_HEIGHT)
                     find_game_screen(pac)
                     
             #quit
@@ -69,7 +74,7 @@ def main():
                     run = False
 
             #username
-            if event.type == pygame.KEYDOWN:    #enter username
+            if event.type == pygame.KEYDOWN and display_one:    #enter username
                 global user_text
                 if event.key == pygame.K_BACKSPACE:
                     user_text = user_text[:-1]
