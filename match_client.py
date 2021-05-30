@@ -47,11 +47,11 @@ def display():
     WIN.fill(BLACK)
     WIN.blit(BACKGROUND1, (0,0))
     
-    #"Username" Button
-    pygame.draw.rect(WIN, LIGHT_GREY, [USERNAME_POS_X, USERNAME_POS_Y, USERNAME_SIZE_X, USERNAME_SIZE_Y])
-    username = FONT2.render(user_text, True, BLACK)
-    WIN.blit(USERNAME_TITLE, (USERNAME_POS_X, USERNAME_POS_Y - 20))
-    WIN.blit(username, (USERNAME_POS_X, USERNAME_POS_Y+10))
+    #"Playername" Button
+    pygame.draw.rect(WIN, LIGHT_GREY, [PLAYERNAME_POS_X, PLAYERNAME_POS_Y, PLAYERNAME_SIZE_X, PLAYERNAME_SIZE_Y])
+    playername = FONT2.render(user_text, True, BLACK)
+    WIN.blit(PLAYERNAME_TITLE, (PLAYERNAME_POS_X, PLAYERNAME_POS_Y - 20))
+    WIN.blit(playername, (PLAYERNAME_POS_X, PLAYERNAME_POS_Y+10))
 
     #"Find Game" button
     pygame.draw.rect(WIN,LIGHT_GREY,[FIND_GAME_POS_X, FIND_GAME_POS_Y, FIND_GAME_SIZE_X, FIND_GAME_SIZE_Y]) 
@@ -63,53 +63,95 @@ def display():
     pygame.draw.rect(WIN, LIGHT_GREY, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
     if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_X + QUIT_SIZE_Y:
         pygame.draw.rect(WIN, RED, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
-    WIN.blit(QUIT, (QUIT_POS_X + QUIT_POS_X/7, QUIT_POS_Y + QUIT_SIZE_Y/3))
+    WIN.blit(QUIT, (QUIT_POS_X + QUIT_SIZE_X/2.6, QUIT_POS_Y + QUIT_SIZE_Y/3))
+
+    #"Tutorial" Button
+    pygame.draw.rect(WIN, LIGHT_GREY, [TUTORIAL_POS_X, TUTORIAL_POS_Y, TUTORIAL_SIZE_X, TUTORIAL_SIZE_Y])
+    if TUTORIAL_POS_X <= mouse[0] <= TUTORIAL_POS_X + TUTORIAL_SIZE_X and TUTORIAL_POS_Y <= mouse[1] <= TUTORIAL_POS_Y + TUTORIAL_SIZE_Y:
+        pygame.draw.rect(WIN, GOLD, [TUTORIAL_POS_X, TUTORIAL_POS_Y, TUTORIAL_SIZE_X, TUTORIAL_SIZE_Y])
+    WIN.blit(TUTORIAL, (TUTORIAL_POS_X + TUTORIAL_SIZE_X/3.25, TUTORIAL_POS_Y + TUTORIAL_SIZE_Y/2.75))
 
     pygame.display.update()
 
-def find_game_screen(position):
+def find_game_screen():
+    mouse = pygame.mouse.get_pos()
     pygame.display.set_caption("PvP Pac-Man - Finding Game")
     WIN.fill(BLACK)
     WIN.blit(BACKGROUND2, (0,0))
     
-    WIN.blit(PACMAN, (position.x, position.y))
+    pygame.draw.rect(WIN, LIGHT_GREY, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
+    if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_X + QUIT_SIZE_Y:
+        pygame.draw.rect(WIN, RED, [QUIT_POS_X, QUIT_POS_Y, QUIT_SIZE_X, QUIT_SIZE_Y])
+    WIN.blit(QUIT, (QUIT_POS_X + QUIT_POS_X/7, QUIT_POS_Y + QUIT_SIZE_Y/3))
 
     pygame.display.update()
+
+def tutorial_screen():
+    mouse = pygame.mouse.get_pos()
+    pygame.display.set_caption("PvP Pac-Man - Tutorial")
+    WIN.fill(BLACK)
+    WIN.blit(BACKGROUND4, (0,0))
+
+    pygame.draw.rect(WIN, LIGHT_GREY, [BACK_POS_X, BACK_POS_Y, BACK_SIZE_X, BACK_SIZE_Y])
+    if BACK_POS_X <= mouse[0] <= BACK_POS_X + BACK_SIZE_X and BACK_POS_Y <= mouse[1] <= BACK_POS_Y + BACK_SIZE_Y:
+        pygame.draw.rect(WIN, GOLD, [BACK_POS_X, TUTORIAL_POS_Y, TUTORIAL_SIZE_X, TUTORIAL_SIZE_Y])
+    WIN.blit(BACK, (BACK_POS_X + BACK_SIZE_X/2.75, BACK_POS_Y + BACK_SIZE_Y/2.75))
+
+    pygame.display.update()
+
+def match_found_screen():
+    pygame.display.set_captaion("PvP Pac-Man - Match Found!")
+    WIN.fill(BLACK)
+    WIN.blit(BACKGROUND3, (0,0))
+
+    pygame.display.update()
+    
 
 def main():
     clock = pygame.time.Clock()
     run = True
-    display_one = True
+    display_main = True
+    display_tutorial = False
+    display_find_game = False
     while run:
         mouse = pygame.mouse.get_pos()
 
         clock.tick(FPS)
         for event in pygame.event.get():
             
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:   #windows quit button
                 run = False
 
-            
-
-                    
             #quit
-            if event.type == pygame.MOUSEBUTTONDOWN and display_one:
-                if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_X + QUIT_SIZE_Y:  #if mouse click is in these two areas
+            if event.type == pygame.MOUSEBUTTONDOWN and (display_main or display_find_game):
+                if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_Y + QUIT_SIZE_Y:  #if mouse click is within this area
                     run = False
 
-            #username
-            if event.type == pygame.KEYDOWN:    #enter username
+            if event.type == pygame.MOUSEBUTTONDOWN and display_main:
+                if TUTORIAL_POS_X <= mouse[0] <= TUTORIAL_POS_X + TUTORIAL_SIZE_X and TUTORIAL_POS_Y <= mouse[1] <= TUTORIAL_POS_Y + TUTORIAL_SIZE_Y:
+                    display_main = False
+                    display_tutorial = True
+                    tutorial_screen()
+            
+            if event.type == pygame.MOUSEBUTTONDOWN and display_tutorial:
+                if BACK_POS_X <= mouse[0] <= BACK_POS_X + BACK_SIZE_X and BACK_POS_Y <= mouse[1] <= BACK_POS_Y + BACK_SIZE_Y:
+                    display_main = True
+                    display_tutorial = False
+
+
+
+            #playername
+            if event.type == pygame.KEYDOWN and display_main:    #enter playername
                 global user_text
                 if event.key == pygame.K_BACKSPACE:
                     user_text = user_text[:-1]
                 else:
                     if len(user_text) < 10:
                         user_text += event.unicode
-            
+
             #find game
-            if event.type == pygame.MOUSEBUTTONDOWN and display_one:
+            if event.type == pygame.MOUSEBUTTONDOWN and display_main:
                 if FIND_GAME_POS_X <= mouse[0] <= FIND_GAME_POS_X + FIND_GAME_SIZE_X and FIND_GAME_POS_Y <= mouse[1] <= FIND_GAME_POS_Y + FIND_GAME_SIZE_Y:
-                    
                     client.dispatch_event("CREATE", user_text)
                     # Wait until "PLAYER_CREATED" has been handled.
                     while client.player_id is None:
@@ -119,18 +161,28 @@ def main():
                     while client.status == "lobby":
                         pass
                     
-                    display_one = False
-                    pac = pygame.Rect(50, 670, PACMAN_WIDTH, PACMAN_HEIGHT)
-                    find_game_screen(pac)
-                    
-            if client.status =="match":
+                    display_main = False
+                    display_find_game = True
+
+                    find_game_screen()
+
+            # if event.type == pygame.MOUSEBUTTONDOWN and display_find_game:
+            #     if QUIT_POS_X <= mouse[0] <= QUIT_POS_X + QUIT_SIZE_X and QUIT_POS_Y <= mouse[1] <= QUIT_POS_Y + QUIT_SIZE_Y:
+            #         run = False
+
+            if client.status == "match":
                 pass
+                #match_found_screen()
                 #TODO: launch actual game
 
 
 
-        if display_one:
+        if display_main:
             display()
+        if display_find_game:
+            find_game_screen()
+        if display_tutorial:
+            tutorial_screen()
 
     pygame.quit()
 
@@ -153,10 +205,8 @@ if __name__ == "__main__":
     HEIGHT = WIN.get_height()
     BACKGROUND1 = pygame.image.load('MainScreen.png')
     BACKGROUND2 = pygame.image.load('LoadingScreen.png')
-    PACMAN_IMAGE = pygame.image.load('pacmanyellow.png')
-    PACMAN_WIDTH = 50
-    PACMAN_HEIGHT = 51
-    PACMAN = pygame.transform.scale(PACMAN_IMAGE, (PACMAN_HEIGHT, PACMAN_WIDTH))
+    BACKGROUND3 = pygame.image.load('GameFound.png')
+    BACKGROUND4 = pygame.image.load('Tutorial.png')
     FPS = 50
     
 
@@ -166,6 +216,7 @@ if __name__ == "__main__":
     RED = 255,0,0
     GREEN = 0,255,0
     LIGHT_GREY = 211,211,211
+    GOLD = 255, 215, 0
 
 
     #text
@@ -175,15 +226,17 @@ if __name__ == "__main__":
 
     FIND_GAME = FONT.render('Find Game', True, BLACK)
     QUIT = FONT.render('Quit', True, BLACK)
-    USERNAME_TITLE = FONT.render("Username:", True, WHITE)
+    PLAYERNAME_TITLE = FONT.render("Playername:", True, WHITE)
+    TUTORIAL = FONT.render('Tutorial', True, BLACK)
+    BACK = FONT.render('Back', True, BLACK)
     user_text = ''
 
 
     #Buttons
-    USERNAME_POS_X = 282
-    USERNAME_POS_Y = 407
-    USERNAME_SIZE_X = 437
-    USERNAME_SIZE_Y = 69
+    PLAYERNAME_POS_X = 282
+    PLAYERNAME_POS_Y = 407
+    PLAYERNAME_SIZE_X = 437
+    PLAYERNAME_SIZE_Y = 69
 
     FIND_GAME_POS_X = 166
     FIND_GAME_POS_Y = 614
@@ -194,6 +247,16 @@ if __name__ == "__main__":
     QUIT_POS_Y = 614
     QUIT_SIZE_X = 219
     QUIT_SIZE_Y = 69
+
+    TUTORIAL_POS_X = 739
+    TUTORIAL_POS_Y = 892
+    TUTORIAL_SIZE_X = 219
+    TUTORIAL_SIZE_Y = 69
+
+    BACK_POS_X = 71
+    BACK_POS_Y = 892
+    BACK_SIZE_X = 219
+    BACK_SIZE_Y = 69
     
     main()
     
