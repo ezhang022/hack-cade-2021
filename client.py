@@ -32,26 +32,20 @@ def display():
 
     pygame.display.update()
 
-def find_game_screen(position):
+def find_game_screen():
     pygame.display.set_caption("PvP Pac-Man - Finding Game")
     WIN.fill(BLACK)
     WIN.blit(BACKGROUND2, (0,0))
     
-    WIN.blit(PACMAN, (position.x, position.y))
 
     pygame.display.update()
 
-# def movePac(pac):
-#     def move_x(pac):
-#         pac.x += 100
-#     x = move_x(pac)
-#     pygame.time.set_timer(x, 750)
 
 def main():
     clock = pygame.time.Clock()
     run = True
     display_one = True
-    pac = pygame.Rect(50, 670, PACMAN_WIDTH, PACMAN_HEIGHT)
+
     while run:
         mouse = pygame.mouse.get_pos()
 
@@ -66,7 +60,7 @@ def main():
                 if FIND_GAME_POS_X <= mouse[0] <= FIND_GAME_POS_X + FIND_GAME_SIZE_X and FIND_GAME_POS_Y <= mouse[1] <= FIND_GAME_POS_Y + FIND_GAME_SIZE_Y:
                     # Your Code Here Kai for what you want button to do
                     display_one = False
-                    find_game_screen(pac)
+                    find_game_screen()
                     
             #quit
             if event.type == pygame.MOUSEBUTTONDOWN and display_one:
@@ -99,9 +93,6 @@ if __name__ == "__main__":
     BACKGROUND1 = pygame.image.load('MainScreen.png')
     BACKGROUND2 = pygame.image.load('LoadingScreen.png')
     PACMAN_IMAGE = pygame.image.load('pacmanyellow.png')
-    PACMAN_WIDTH = 50
-    PACMAN_HEIGHT = 51
-    PACMAN = pygame.transform.scale(PACMAN_IMAGE, (PACMAN_HEIGHT, PACMAN_WIDTH))
     FPS = 60
     
 
