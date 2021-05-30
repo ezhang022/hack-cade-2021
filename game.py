@@ -261,12 +261,16 @@ while run:
     if pygame.sprite.spritecollide(player, fruit_group, True):
         invincibility = True
 
-    if pygame.sprite.spritecollide(player, ghost_group, False):
+    if (not invincibility) and pygame.sprite.spritecollide(player, ghost_group, False):
         run = False
 
     if invincibility:
         draw_text("INVINCIBILITY ON", font, white, 715, 10)
         #this is also supposed to have a timer and a countdown for when it ends but i'm dumb and can't figure it out kai help pls
+
+        if pygame.sprite.spritecollide(player, ghost_group, True):
+            score += 50 #this is a placeholder number 
+    
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
