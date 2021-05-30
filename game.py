@@ -14,6 +14,7 @@ pygame.display.set_caption('Pacman Game')
 # define game variables
 tile_size = 50
 score = 0
+invincibility = False
 
 # load images
 bg_img = pygame.image.load('black.png')
@@ -158,7 +159,21 @@ class Coin(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
 
+class Fruit(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('strawberry.png')
+        self.image = pygame.transform.scale(img, (40,40))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
 
+class Ghost(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('dummyghost.png')
+        self.image = pygame.transform.scale(img, (50,50))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
 
 class World():
     def __init__(self, data):
@@ -182,6 +197,12 @@ class World():
                 if tile == 2:
                     coin = Coin(col_count * tile_size + (tile_size // 2), row_count*tile_size + (tile_size // 2))
                     coin_group.add(coin)
+                if tile == 3:
+                    fruit = Fruit(col_count * tile_size + (tile_size // 2), row_count*tile_size + (tile_size // 2))
+                    fruit_group.add(fruit)
+                if tile == 4:
+                    ghost = Ghost(col_count * tile_size + (tile_size // 2), row_count*tile_size + (tile_size // 2))
+                    ghost_group.add(ghost)                                        
                 col_count += 1
             row_count += 1
 
@@ -192,29 +213,31 @@ class World():
 
 world_data=[
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-[1, 0, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-[1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
-[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1],
-[1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
-[1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1],
-[1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1],
-[1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1],
-[1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1],
-[1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
-[1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
-[1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1],
-[1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1],
-[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1],
-[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
-[1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1],
-[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+[1, 0, 2, 2, 2, 2, 1, 3, 2, 2, 2, 2, 3, 1, 2, 2, 2, 2, 0, 1],
+[1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+[1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1],
+[1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 2, 1, 2, 2, 2, 1, 2, 1],
+[1, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1],
+[1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1],
+[1, 1, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 1],
+[1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1],
+[1, 2, 1, 1, 1, 2, 1, 3, 2, 2, 2, 2, 3, 1, 2, 1, 1, 1, 2, 1],
+[1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1],
+[1, 3, 1, 2, 2, 2, 1, 2, 1, 0, 0, 1, 2, 1, 2, 2, 2, 1, 3, 1],
+[1, 1, 1, 2, 1, 2, 1, 2, 1, 4, 4, 1, 2, 1, 2, 1, 2, 1, 1, 1],
+[1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1],
+[1, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1],
+[1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 2, 1, 2, 2, 2, 1, 2, 1],
+[1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1],
+[1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 2, 1],
+[1, 0, 2, 2, 2, 2, 1, 3, 2, 2, 2, 2, 3, 1, 2, 2, 2, 2, 0, 1],
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
 player=Player(50, 50)
 coin_group = pygame.sprite.Group()
+fruit_group = pygame.sprite.Group()
+ghost_group = pygame.sprite.Group()
 world=World(world_data)
 
 
@@ -227,11 +250,23 @@ while run:
     world.draw()
     player.update()
     coin_group.draw(screen)
+    fruit_group.draw(screen)
+    ghost_group.draw(screen)
 
-    draw_text('Score: ' + str(score), font, white, tile_size - 10, 10)
+    draw_text('Score: ' + str(score), font, white, tile_size, 10)
 
     if pygame.sprite.spritecollide(player, coin_group, True):
         score += 10
+    
+    if pygame.sprite.spritecollide(player, fruit_group, True):
+        invincibility = True
+
+    if pygame.sprite.spritecollide(player, ghost_group, False):
+        run = False
+
+    if invincibility:
+        draw_text("INVINCIBILITY ON", font, white, 715, 10)
+        #this is also supposed to have a timer and a countdown for when it ends but i'm dumb and can't figure it out kai help pls
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
