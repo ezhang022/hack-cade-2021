@@ -1,5 +1,8 @@
 # PvP-Pacman
 
+Devpost: <https://devpost.com/software/pacman-pvp>  
+Demo Video: <https://youtu.be/VnljCPchyjI>
+
 ## What is Pacman PvP?
 Pacman PvP is a remake of the classic game Pacman, one that all three members of our team have fond memories of. Growing up with simple computer games, we can all clearly remember the suspense of a ghost closing in behind you and the triumph that comes when you manage to eat a power-up dot and chase the ghost instead.
 ##
