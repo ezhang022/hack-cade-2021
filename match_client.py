@@ -35,7 +35,6 @@ class ChaseClient(Client):
         self.status = "match"
         game_loop_is_running = False
         self.match_id == match_id
-        #TODO: add join real game stuff
 
 
 # Create a client.
@@ -199,10 +198,10 @@ if __name__ == "__main__":
     WIN = pygame.display.set_mode(DIMENSIONS)
     WIDTH = WIN.get_width()
     HEIGHT = WIN.get_height()
-    BACKGROUND1 = pygame.image.load('MainScreen.png')
-    BACKGROUND2 = pygame.image.load('LoadingScreen.png')
-    BACKGROUND3 = pygame.image.load('GameFound.png')
-    BACKGROUND4 = pygame.image.load('Tutorial.png')
+    BACKGROUND1 = pygame.image.load('images/MainScreen.png')
+    BACKGROUND2 = pygame.image.load('images/LoadingScreen.png')
+    BACKGROUND3 = pygame.image.load('images/GameFound.png')
+    BACKGROUND4 = pygame.image.load('images/Tutorial.png')
     FPS = 50
     
 

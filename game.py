@@ -17,7 +17,7 @@ score = 0
 invincibility = False
 
 # load images
-bg_img = pygame.image.load('black.png')
+bg_img = pygame.image.load('images/black.png')
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height))
 
 
@@ -32,7 +32,7 @@ def draw_text(text, font, text_col, x, y):
 
 class Player():
     def __init__(self, x, y):
-        img = pygame.image.load('pacmanyellow.png')
+        img = pygame.image.load('images/pacmanyellow.png')
         self.image = pygame.transform.scale(img, (50, 50))
 
         self.right = self.image
@@ -154,7 +154,7 @@ class Player():
 class Coin(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('point.png')
+        img = pygame.image.load('images/point.png')
         self.image = pygame.transform.scale(img, (20,20))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
@@ -162,7 +162,7 @@ class Coin(pygame.sprite.Sprite):
 class Fruit(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('strawberry.png')
+        img = pygame.image.load('images/strawberry.png')
         self.image = pygame.transform.scale(img, (40,40))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
@@ -170,7 +170,7 @@ class Fruit(pygame.sprite.Sprite):
 class Ghost(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('dummyghost.png')
+        img = pygame.image.load('images/dummyghost.png')
         self.image = pygame.transform.scale(img, (50,50))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
@@ -180,7 +180,7 @@ class World():
 
         self.tile_list=[]
 
-        wall_img=pygame.image.load('blue.png')
+        wall_img=pygame.image.load('images/blue.png')
 
         row_count=0
         for row in data:

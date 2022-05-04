@@ -90,9 +90,9 @@ if __name__ == "__main__":
     WIN = pygame.display.set_mode(DIMENSIONS)
     WIDTH = WIN.get_width()
     HEIGHT = WIN.get_height()
-    BACKGROUND1 = pygame.image.load('MainScreen.png')
-    BACKGROUND2 = pygame.image.load('LoadingScreen.png')
-    PACMAN_IMAGE = pygame.image.load('pacmanyellow.png')
+    BACKGROUND1 = pygame.image.load('images/MainScreen.png')
+    BACKGROUND2 = pygame.image.load('images/LoadingScreen.png')
+    PACMAN_IMAGE = pygame.image.load('images/pacmanyellow.png')
     FPS = 60
     
 
